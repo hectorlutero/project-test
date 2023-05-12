@@ -1,0 +1,750 @@
+<div>
+    <!-- Sidebar backdrop (mobile only) -->
+    <div class="fixed inset-0 bg-slate-900 bg-opacity-30 z-40 lg:hidden lg:z-auto transition-opacity duration-200"
+         :class="sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'"
+         aria-hidden="true"
+         x-cloak></div>
+
+    <!-- Sidebar -->
+    <div id="sidebar"
+         class="flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-screen overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 lg:w-20 lg:sidebar-expanded:!w-64 2xl:!w-64 shrink-0 bg-slate-800 p-4 transition-all duration-200 ease-in-out"
+         :class="sidebarOpen ? 'translate-x-0' : '-translate-x-64'"
+         @click.outside="sidebarOpen = false"
+         @keydown.escape.window="sidebarOpen = false"
+         x-cloak="lg">
+
+        <!-- Sidebar header -->
+        <div class="flex justify-between mb-10 pr-3 sm:px-2">
+            <!-- Close button -->
+            <button class="lg:hidden text-slate-500 hover:text-slate-400"
+                    @click.stop="sidebarOpen = !sidebarOpen"
+                    aria-controls="sidebar"
+                    :aria-expanded="sidebarOpen">
+                <span class="sr-only">Close sidebar</span>
+                <svg class="w-6 h-6 fill-current"
+                     viewBox="0 0 24 24"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.7 18.7l1.4-1.4L7.8 13H20v-2H7.8l4.3-4.3-1.4-1.4L4 12z" />
+                </svg>
+            </button>
+            <!-- Logo -->
+            <a class="block"
+               href="{{ route('dashboard') }}">
+                <svg width="32"
+                     height="32"
+                     viewBox="0 0 32 32">
+                    <defs>
+                        <linearGradient x1="28.538%"
+                                        y1="20.229%"
+                                        x2="100%"
+                                        y2="108.156%"
+                                        id="logo-a">
+                            <stop stop-color="#A5B4FC"
+                                  stop-opacity="0"
+                                  offset="0%" />
+                            <stop stop-color="#A5B4FC"
+                                  offset="100%" />
+                        </linearGradient>
+                        <linearGradient x1="88.638%"
+                                        y1="29.267%"
+                                        x2="22.42%"
+                                        y2="100%"
+                                        id="logo-b">
+                            <stop stop-color="#38BDF8"
+                                  stop-opacity="0"
+                                  offset="0%" />
+                            <stop stop-color="#38BDF8"
+                                  offset="100%" />
+                        </linearGradient>
+                    </defs>
+                    <rect fill="#6366F1"
+                          width="32"
+                          height="32"
+                          rx="16" />
+                    <path d="M18.277.16C26.035 1.267 32 7.938 32 16c0 8.837-7.163 16-16 16a15.937 15.937 0 01-10.426-3.863L18.277.161z"
+                          fill="#4F46E5" />
+                    <path d="M7.404 2.503l18.339 26.19A15.93 15.93 0 0116 32C7.163 32 0 24.837 0 16 0 10.327 2.952 5.344 7.404 2.503z"
+                          fill="url(#logo-a)" />
+                    <path d="M2.223 24.14L29.777 7.86A15.926 15.926 0 0132 16c0 8.837-7.163 16-16 16-5.864 0-10.991-3.154-13.777-7.86z"
+                          fill="url(#logo-b)" />
+                </svg>
+            </a>
+            <a href="{{ route('home') }}"
+               class="btn bg-indigo-600 text-white">Home</a>
+            <a href="{{ route('search.index', ['term' => '']) }}"
+               class="btn bg-indigo-600 text-white">Loja</a>
+        </div>
+
+        <!-- Links -->
+        <div class="space-y-8">
+            <!-- Pages group -->
+            <div>
+                <h3 class="text-xs uppercase text-slate-500 font-semibold pl-3">
+                    <span class="hidden lg:block lg:sidebar-expanded:hidden 2xl:hidden text-center w-6"
+                          aria-hidden="true">•••</span>
+                    <span class="lg:hidden lg:sidebar-expanded:block 2xl:block">Pages</span>
+                </h3>
+                <ul class="mt-3">
+                    <!-- Dashboard -->
+                    <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(1), ['dashboard'])) {{ 'bg-slate-900' }} @endif"
+                        x-data="{ open: {{ in_array(Request::segment(1), ['dashboard']) ? 1 : 0 }} }">
+                        <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(1), ['dashboard'])) {{ 'hover:text-slate-200' }} @endif"
+                           href="{{ route('dashboard') }}"
+                           @click="sidebarExpanded ? open = !open : sidebarExpanded = true">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <svg class="shrink-0 h-6 w-6"
+                                         viewBox="0 0 24 24">
+                                        <path class="fill-current @if (in_array(Request::segment(1), ['dashboard'])) {{ 'text-indigo-500' }}@else{{ 'text-slate-400' }} @endif"
+                                              d="M12 0C5.383 0 0 5.383 0 12s5.383 12 12 12 12-5.383 12-12S18.617 0 12 0z" />
+                                        <path class="fill-current @if (in_array(Request::segment(1), ['dashboard'])) {{ 'text-indigo-600' }}@else{{ 'text-slate-600' }} @endif"
+                                              d="M12 3c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9z" />
+                                        <path class="fill-current @if (in_array(Request::segment(1), ['dashboard'])) {{ 'text-indigo-200' }}@else{{ 'text-slate-400' }} @endif"
+                                              d="M12 15c-1.654 0-3-1.346-3-3 0-.462.113-.894.3-1.285L6 6l4.714 3.301A2.973 2.973 0 0112 9c1.654 0 3 1.346 3 3s-1.346 3-3 3z" />
+                                    </svg>
+                                    <span
+                                          class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Dashboard</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+
+                    <!-- Negócios -->
+                    @can('manage_business')
+                        @if (auth()->user()->roles[0]->name === 'client' &&
+                                auth()->user()->countBusiness() == 0)
+                            <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(2), ['meus-negocios'])) {{ 'bg-slate-900' }} @endif"
+                                x-data="{ open: {{ in_array(Request::segment(2), ['meus-negocios']) ? 1 : 0 }} }">
+                                <a href="{{ route('customer.user.index') }}"
+                                   class="focus:ring-2 w-full focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-5 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <svg width="24px"
+                                                 height="24px"
+                                                 viewBox="0 0 64 64"
+                                                 xmlns="http://www.w3.org/2000/svg"
+                                                 stroke-width="3"
+                                                 stroke="#ffffff"
+                                                 fill="none">
+                                                <g id="SVGRepo_bgCarrier"
+                                                   stroke-width="0"></g>
+                                                <g id="SVGRepo_tracerCarrier"
+                                                   stroke-linecap="round"
+                                                   stroke-linejoin="round"></g>
+                                                <g id="SVGRepo_iconCarrier">
+                                                    <path
+                                                          d="M30,52.16c.81-2.07,7.06-17,19.76-19.86a.09.09,0,0,0,0-.18c-2.14-.86-15.22-6.57-19.38-20.26a.09.09,0,0,0-.18,0c-.51,2.27-3.94,14.43-20,20a.1.1,0,0,0,0,.19c2.24.38,13.48,3.14,19.62,20.15A.1.1,0,0,0,30,52.16Z">
+                                                    </path>
+                                                    <path
+                                                          d="M48.79,25.08c.29-.74,2.52-6.07,7.06-7.09a0,0,0,0,0,0-.07c-.76-.3-5.43-2.34-6.92-7.23a0,0,0,0,0-.07,0c-.18.82-1.4,5.16-7.14,7.13a0,0,0,0,0,0,.07c.8.14,4.81,1.12,7,7.2A0,0,0,0,0,48.79,25.08Z">
+                                                    </path>
+                                                </g>
+                                            </svg>
+                                            <span
+                                                  class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-white">
+                                                Quero ser um Parceiro
+                                            </span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        @else
+                            @if (auth()->user()->countBusiness() == 0)
+                                <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(2), ['meus-negocios'])) {{ 'bg-slate-900' }} @endif"
+                                    x-data="{ open: {{ in_array(Request::segment(2), ['meus-negocios']) ? 1 : 0 }} }">
+                                    <a href="{{ route('partner.business.show', ['id' => 'new']) }}"
+                                       class="focus:ring-2 w-full focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-5 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <svg width="24px"
+                                                     height="24px"
+                                                     viewBox="0 0 64 64"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     stroke-width="3"
+                                                     stroke="#ffffff"
+                                                     fill="none">
+                                                    <g id="SVGRepo_bgCarrier"
+                                                       stroke-width="0"></g>
+                                                    <g id="SVGRepo_tracerCarrier"
+                                                       stroke-linecap="round"
+                                                       stroke-linejoin="round"></g>
+                                                    <g id="SVGRepo_iconCarrier">
+                                                        <path
+                                                              d="M30,52.16c.81-2.07,7.06-17,19.76-19.86a.09.09,0,0,0,0-.18c-2.14-.86-15.22-6.57-19.38-20.26a.09.09,0,0,0-.18,0c-.51,2.27-3.94,14.43-20,20a.1.1,0,0,0,0,.19c2.24.38,13.48,3.14,19.62,20.15A.1.1,0,0,0,30,52.16Z">
+                                                        </path>
+                                                        <path
+                                                              d="M48.79,25.08c.29-.74,2.52-6.07,7.06-7.09a0,0,0,0,0,0-.07c-.76-.3-5.43-2.34-6.92-7.23a0,0,0,0,0-.07,0c-.18.82-1.4,5.16-7.14,7.13a0,0,0,0,0,0,.07c.8.14,4.81,1.12,7,7.2A0,0,0,0,0,48.79,25.08Z">
+                                                        </path>
+                                                    </g>
+                                                </svg>
+                                                <span
+                                                      class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-white">
+                                                    Criar novo negócio
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            @else
+                                <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (Request::segment(2) == 'products' ||
+                                        str_contains(Request::segment(2), 'product') ||
+                                        (Request::segment(2) == 'services' || str_contains(Request::segment(2), 'service')) ||
+                                        (Request::segment(2) == 'businesses' || str_contains(Request::segment(2), 'business'))) {{ 'bg-slate-900' }} @endif"
+                                    x-data="{ open: {{ Request::segment(2) == 'products' ||
+                                    str_contains(Request::segment(2), 'product') ||
+                                    (Request::segment(2) == 'services' || str_contains(Request::segment(2), 'service')) ||
+                                    (Request::segment(2) == 'businesses' || str_contains(Request::segment(2), 'business'))
+                                        ? 1
+                                        : 0 }} }">
+                                    <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(2), ['products'])) {{ 'hover:text-slate-200' }} @endif"
+                                       href="#0"
+                                       @click="sidebarExpanded ? open = !open : sidebarExpanded = true">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <svg class="shrink-0 h-6 w-6"
+                                                     viewBox="0 0 24 24">
+                                                    <path class="fill-current @if (Request::segment(2) == 'products' ||
+                                                            str_contains(Request::segment(2), 'product') ||
+                                                            (Request::segment(2) == 'services' || str_contains(Request::segment(2), 'service')) ||
+                                                            (Request::segment(2) == 'businesses' || str_contains(Request::segment(2), 'business'))) {{ 'text-indigo-300' }}@else{{ 'text-slate-400' }} @endif"
+                                                          d="M13 15l11-7L11.504.136a1 1 0 00-1.019.007L0 7l13 8z" />
+                                                    <path class="fill-current @if (Request::segment(2) == 'products' ||
+                                                            str_contains(Request::segment(2), 'product') ||
+                                                            (Request::segment(2) == 'services' || str_contains(Request::segment(2), 'service')) ||
+                                                            (Request::segment(2) == 'businesses' || str_contains(Request::segment(2), 'business'))) {{ 'text-indigo-500' }}@else{{ 'text-slate-700' }} @endif"
+                                                          d="M13 15L0 7v9c0 .355.189.685.496.864L13 24v-9z" />
+                                                    <path class="fill-current @if (Request::segment(2) == 'products' ||
+                                                            str_contains(Request::segment(2), 'product') ||
+                                                            (Request::segment(2) == 'services' || str_contains(Request::segment(2), 'service')) ||
+                                                            (Request::segment(2) == 'businesses' || str_contains(Request::segment(2), 'business'))) {{ 'text-indigo-600' }}@else{{ 'text-slate-600' }} @endif"
+                                                          d="M13 15.047V24l10.573-7.181A.999.999 0 0024 16V8l-11 7.047z" />
+                                                </svg>
+                                                <span
+                                                      class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Meus
+                                                    Negócios</span>
+                                            </div>
+                                            <!-- Icon -->
+                                            <div
+                                                 class="flex shrink-0 ml-2 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                                <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400 @if (Request::segment(2) == 'products' || str_contains(Request::segment(2), 'product')) {{ 'rotate-180' }} @endif"
+                                                     :class="open ? 'rotate-180' : 'rotate-0'"
+                                                     viewBox="0 0 12 12">
+                                                    <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
+                                        <ul class="pl-9 mt-1 @if (!in_array(Request::segment(2), ['businesses'])) {{ 'hidden' }} @endif"
+                                            :class="open ? '!block' : 'hidden'">
+                                            <li class="mb-1 last:mb-0">
+
+                                                <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('partner.businesses.index')) {{ '!text-indigo-500' }} @endif"
+                                                   href="{{ route('partner.businesses.index') }}">
+                                                    <span
+                                                          class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Todos
+                                                        os Negócios</span>
+                                                </a>
+                                            </li>
+                                            <li class="mb-1 last:mb-0">
+
+                                                <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('partner.products.index')) {{ '!text-indigo-500' }} @endif"
+                                                   href="{{ route('partner.products.index') }}">
+                                                    <span
+                                                          class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Todos
+                                                        os produtos</span>
+                                                </a>
+                                            </li>
+                                            <li class="mb-1 last:mb-0">
+
+                                                <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('partner.services.index')) {{ '!text-indigo-500' }} @endif"
+                                                   href="{{ route('partner.services.index') }}">
+                                                    <span
+                                                          class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Todos
+                                                        os serviços</span>
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </li>
+                            @endif
+                        @endif
+                    @endcan
+
+                    <!-- Empresas -->
+                    @can('manage_companies')
+                        <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(2), ['companies'])) {{ 'bg-slate-900' }} @endif"
+                            x-data="{ open: {{ in_array(Request::segment(2), ['companies']) ? 1 : 0 }} }">
+                            <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(2), ['companies'])) {{ 'hover:text-slate-200' }} @endif"
+                               href="{{ route('admin.companies.index') }}"
+                               @click="sidebarExpanded ? open = !open : sidebarExpanded = true">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <svg class="shrink-0 h-6 w-6"
+                                             viewBox="0 0 24 24">
+                                            <path class="fill-current @if (in_array(Request::segment(2), ['companies'])) {{ 'text-indigo-300' }}@else{{ 'text-slate-400' }} @endif"
+                                                  d="M13 15l11-7L11.504.136a1 1 0 00-1.019.007L0 7l13 8z" />
+                                            <path class="fill-current @if (in_array(Request::segment(2), ['companies'])) {{ 'text-indigo-600' }}@else{{ 'text-slate-700' }} @endif"
+                                                  d="M13 15L0 7v9c0 .355.189.685.496.864L13 24v-9z" />
+                                            <path class="fill-current @if (in_array(Request::segment(2), ['companies'])) {{ 'text-indigo-500' }}@else{{ 'text-slate-600' }} @endif"
+                                                  d="M13 15.047V24l10.573-7.181A.999.999 0 0024 16V8l-11 7.047z" />
+                                        </svg>
+                                        <span
+                                              class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Empresas</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    @endcan
+
+                    <!-- Produtos -->
+                    @can('manage_companies')
+                        <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (Request::segment(2) == 'products' || str_contains(Request::segment(2), 'product')) {{ 'bg-slate-900' }} @endif"
+                            x-data="{ open: {{ Request::segment(2) == 'products' || str_contains(Request::segment(2), 'product') ? 1 : 0 }} }">
+                            <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(2), ['products'])) {{ 'hover:text-slate-200' }} @endif"
+                               href="#0"
+                               @click="sidebarExpanded ? open = !open : sidebarExpanded = true">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <svg class="shrink-0 h-6 w-6"
+                                             viewBox="0 0 24 24">
+                                            <path class="fill-current @if (Request::segment(2) == 'products' || str_contains(Request::segment(2), 'product')) {{ 'text-indigo-300' }}@else{{ 'text-slate-400' }} @endif"
+                                                  d="M13 15l11-7L11.504.136a1 1 0 00-1.019.007L0 7l13 8z" />
+                                            <path class="fill-current @if (Request::segment(2) == 'products' || str_contains(Request::segment(2), 'product')) {{ 'text-indigo-600' }}@else{{ 'text-slate-700' }} @endif"
+                                                  d="M13 15L0 7v9c0 .355.189.685.496.864L13 24v-9z" />
+                                            <path class="fill-current @if (Request::segment(2) == 'products' || str_contains(Request::segment(2), 'product')) {{ 'text-indigo-500' }}@else{{ 'text-slate-600' }} @endif"
+                                                  d="M13 15.047V24l10.573-7.181A.999.999 0 0024 16V8l-11 7.047z" />
+                                        </svg>
+                                        <span
+                                              class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Produtos</span>
+                                    </div>
+                                    <!-- Icon -->
+                                    <div
+                                         class="flex shrink-0 ml-2 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                        <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400 @if (Request::segment(2) == 'products' || str_contains(Request::segment(2), 'product')) {{ 'rotate-180' }} @endif"
+                                             :class="open ? 'rotate-180' : 'rotate-0'"
+                                             viewBox="0 0 12 12">
+                                            <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
+                                <ul class="pl-9 mt-1 @if (!in_array(Request::segment(2), ['products'])) {{ 'hidden' }} @endif"
+                                    :class="open ? '!block' : 'hidden'">
+                                    <li class="mb-1 last:mb-0">
+
+                                        <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.products.index')) {{ '!text-indigo-500' }} @endif"
+                                           href="{{ route('admin.products.index') }}">
+                                            <span
+                                                  class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Todos
+                                                os produtos</span>
+                                        </a>
+                                    </li>
+                                    <li class="mb-1 last:mb-0">
+                                        <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.products-categories.index')) {{ '!text-indigo-500' }} @endif"
+                                           href="{{ route('admin.products-categories.index') }}">
+                                            <span
+                                                  class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Categorias
+                                                de Produtos</span>
+                                        </a>
+                                    </li>
+                                    <li class="mb-1 last:mb-0">
+                                        <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.products-tags.index')) ) {{ '!text-indigo-500' }} @endif"
+                                           href="{{ route('admin.products-tags.index') }}">
+                                            <span
+                                                  class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Tags
+                                                de Produtos</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    @endcan
+
+                    <!-- Serviços -->
+                    @can('manage_companies')
+                        <!-- Serviços -->
+                        <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (Request::segment(2) == 'services' || str_contains(Request::segment(2), 'service')) {{ 'bg-slate-900' }} @endif"
+                            x-data="{ open: {{ Request::segment(2) == 'services' || str_contains(Request::segment(2), 'service') ? 1 : 0 }} }">
+                            <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (Request::segment(2) == 'services' || str_contains(Request::segment(2), 'service')) {{ 'hover:text-slate-200' }} @endif"
+                               href="#0"
+                               @click="sidebarExpanded ? open = !open : sidebarExpanded = true">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <svg class="shrink-0 h-6 w-6"
+                                             viewBox="0 0 24 24">
+                                            <path class="fill-current @if (Request::segment(2) == 'services' || str_contains(Request::segment(2), 'service')) {{ 'text-indigo-300' }}@else{{ 'text-slate-400' }} @endif"
+                                                  d="M13 15l11-7L11.504.136a1 1 0 00-1.019.007L0 7l13 8z" />
+                                            <path class="fill-current @if (Request::segment(2) == 'services' || str_contains(Request::segment(2), 'service')) {{ 'text-indigo-600' }}@else{{ 'text-slate-700' }} @endif"
+                                                  d="M13 15L0 7v9c0 .355.189.685.496.864L13 24v-9z" />
+                                            <path class="fill-current @if (Request::segment(2) == 'services' || str_contains(Request::segment(2), 'service')) {{ 'text-indigo-500' }}@else{{ 'text-slate-600' }} @endif"
+                                                  d="M13 15.047V24l10.573-7.181A.999.999 0 0024 16V8l-11 7.047z" />
+                                        </svg>
+                                        <span
+                                              class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Serviços</span>
+                                    </div>
+                                    <!-- Icon -->
+                                    <div
+                                         class="flex shrink-0 ml-2 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                        <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400 @if (in_array(Request::segment(2), ['services'])) {{ 'rotate-180' }} @endif"
+                                             :class="open ? 'rotate-180' : 'rotate-0'"
+                                             viewBox="0 0 12 12">
+                                            <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
+                                <ul class="pl-9 mt-1 @if (!in_array(Request::segment(2), ['services'])) {{ 'hidden' }} @endif"
+                                    :class="open ? '!block' : 'hidden'">
+                                    <li class="mb-1 last:mb-0">
+                                        <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.services.index')) {{ '!text-indigo-500' }} @endif"
+                                           href="{{ route('admin.services.index') }}">
+                                            <span
+                                                  class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Todos
+                                                os serviços</span>
+                                        </a>
+                                    </li>
+                                    <li class="mb-1 last:mb-0">
+                                        <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.services-categories.index')) {{ '!text-indigo-500' }} @endif"
+                                           href="{{ route('admin.services-categories.index') }}">
+                                            <span
+                                                  class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Categorias
+                                                de Serviços</span>
+                                        </a>
+                                    </li>
+                                    <li class="mb-1 last:mb-0">
+                                        <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.services-tags.index')) {{ '!text-indigo-500' }} @endif"
+                                           href="{{ route('admin.services-tags.index') }}">
+                                            <span
+                                                  class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Tags
+                                                de Serviços</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    @endcan
+
+                    <!-- Mídias -->
+                    @can('manage_midias')
+                        <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(2), ['midias'])) {{ 'bg-slate-900' }} @endif"
+                            x-data="{ open: {{ in_array(Request::segment(2), ['midias']) ? 1 : 0 }} }">
+                            <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(2), ['midias'])) {{ 'hover:text-slate-200' }} @endif"
+                               href="{{ route('admin.midias.index') }}"
+                               @click="sidebarExpanded ? open = !open : sidebarExpanded = true">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i
+                                           class="fa fa-film @if (in_array(Request::segment(2), ['midias'])) {{ 'text-indigo-300' }}@else{{ 'text-slate-400' }} @endif text-xl mr-1"></i>
+                                        <span
+                                              class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Mídias</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    @endcan
+
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="text-xs uppercase text-slate-500 font-semibold pl-3">
+                    <span class="hidden lg:block lg:sidebar-expanded:hidden 2xl:hidden text-center w-6"
+                          aria-hidden="true">•••</span>
+                    <span class="lg:hidden lg:sidebar-expanded:block 2xl:block">Configurações</span>
+                </h3>
+                <ul class="mt-3">
+
+                    <!-- Segmentações (categorias de empresas) -->
+                    @can('company_categories')
+                        <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(2), ['company-categories'])) {{ 'bg-slate-900' }} @endif"
+                            x-data="{ open: {{ in_array(Request::segment(2), ['company-categories']) ? 1 : 0 }} }">
+                            <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(2), ['company-categories'])) {{ 'hover:text-slate-200' }} @endif"
+                               href="{{ route('admin.company-categories.index') }}"
+                               @click="sidebarExpanded ? open = !open : sidebarExpanded = true">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <svg class="shrink-0 h-6 w-6"
+                                             viewBox="0 0 24 24">
+                                            <circle class="fill-current @if (in_array(Request::segment(2), ['company-categories'])) {{ 'text-indigo-300' }}@else{{ 'text-slate-400' }} @endif"
+                                                    cx="18.5"
+                                                    cy="5.5"
+                                                    r="4.5" />
+                                            <circle class="fill-current @if (in_array(Request::segment(2), ['company-categories'])) {{ 'text-indigo-500' }}@else{{ 'text-slate-600' }} @endif"
+                                                    cx="5.5"
+                                                    cy="5.5"
+                                                    r="4.5" />
+                                            <circle class="fill-current @if (in_array(Request::segment(2), ['company-categories'])) {{ 'text-indigo-500' }}@else{{ 'text-slate-600' }} @endif"
+                                                    cx="18.5"
+                                                    cy="18.5"
+                                                    r="4.5" />
+                                            <circle class="fill-current @if (in_array(Request::segment(2), ['company-categories'])) {{ 'text-indigo-300' }}@else{{ 'text-slate-400' }} @endif"
+                                                    cx="5.5"
+                                                    cy="18.5"
+                                                    r="4.5" />
+                                        </svg>
+                                        <span
+                                              class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Segmentações</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    @endcan
+
+                    <!-- Usuários -->
+                    @can('manage_users')
+                        <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(2), ['users'])) {{ 'bg-slate-900' }} @endif"
+                            x-data="{ open: {{ in_array(Request::segment(2), ['users']) ? 1 : 0 }} }">
+                            <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(2), ['users'])) {{ 'hover:text-slate-200' }} @endif"
+                               href="#0"
+                               @click="sidebarExpanded ? open = !open : sidebarExpanded = true">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <svg class="shrink-0 h-6 w-6"
+                                             viewBox="0 0 24 24">
+                                            <path class="fill-current @if (request()->routeIs('admin.user*')) {{ 'text-indigo-500' }}@else{{ 'text-slate-600' }} @endif"
+                                                  d="M18.974 8H22a2 2 0 012 2v6h-2v5a1 1 0 01-1 1h-2a1 1 0 01-1-1v-5h-2v-6a2 2 0 012-2h.974zM20 7a2 2 0 11-.001-3.999A2 2 0 0120 7zM2.974 8H6a2 2 0 012 2v6H6v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5H0v-6a2 2 0 012-2h.974zM4 7a2 2 0 11-.001-3.999A2 2 0 014 7z" />
+                                            <path class="fill-current @if (request()->routeIs('admin.user*')) {{ 'text-indigo-300' }}@else{{ 'text-slate-400' }} @endif"
+                                                  d="M12 6a3 3 0 110-6 3 3 0 010 6zm2 18h-4a1 1 0 01-1-1v-6H6v-6a3 3 0 013-3h6a3 3 0 013 3v6h-3v6a1 1 0 01-1 1z" />
+                                        </svg>
+                                        <span
+                                              class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Usuários</span>
+                                    </div>
+                                    <!-- Icon -->
+                                    <div
+                                         class="flex shrink-0 ml-2 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                        <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400 @if (request()->routeIs('admin.user*')) {{ 'rotate-180' }} @endif"
+                                             :class="open ? 'rotate-180' : 'rotate-0'"
+                                             viewBox="0 0 12 12">
+                                            <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
+                                <ul class="pl-9 mt-1 @if (!in_array(Request::segment(2), ['users'])) {{ 'hidden' }} @endif"
+                                    :class="open ? '!block' : 'hidden'">
+                                    <li class="mb-1 last:mb-0">
+                                        <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.users.index')) {{ '!text-indigo-500' }} @endif"
+                                           href="{{ route('admin.users.index') }}">
+                                            <span
+                                                  class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                                Todos os usuários
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    @endcan
+
+                    <!-- Opções de Frete -->
+                    @can('manage_delivery')
+                        <li
+                            class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(2), ['inbox'])) {{ 'bg-slate-900' }} @endif">
+                            <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(2), ['inbox'])) {{ 'hover:text-slate-200' }} @endif"
+                               href="#0">
+                                <div class="flex items-center">
+                                    <svg class="shrink-0 h-6 w-6"
+                                         viewBox="0 0 24 24">
+                                        <path class="fill-current @if (in_array(Request::segment(2), ['inbox'])) {{ 'text-indigo-500' }}@else{{ 'text-slate-600' }} @endif"
+                                              d="M16 13v4H8v-4H0l3-9h18l3 9h-8Z" />
+                                        <path class="fill-current @if (in_array(Request::segment(2), ['inbox'])) {{ 'text-indigo-300' }}@else{{ 'text-slate-400' }} @endif"
+                                              d="m23.72 12 .229.686A.984.984 0 0 1 24 13v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1v-8c0-.107.017-.213.051-.314L.28 12H8v4h8v-4H23.72ZM13 0v7h3l-4 5-4-5h3V0h2Z" />
+                                    </svg>
+                                    <span
+                                          class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Opções
+                                        de Frete</span>
+                                </div>
+                            </a>
+                        </li>
+                    @endcan
+
+                    <!-- Settings -->
+                    @can('manage_admin_settings')
+                        <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (request()->routeIs('admin.role*') || request()->routeIs('admin.plan*')) {{ 'bg-slate-900' }} @endif"
+                            x-data="{ open: {{ request()->routeIs('admin.role*') || request()->routeIs('admin.plan*') ? 1 : 0 }} }">
+                            <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (request()->routeIs('admin.role*') || request()->routeIs('admin.plan*')) {{ 'hover:text-slate-200' }} @endif"
+                               href="#0"
+                               @click="sidebarExpanded ? open = !open : sidebarExpanded = true">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <svg class="shrink-0 h-6 w-6"
+                                             viewBox="0 0 24 24">
+                                            <path class="fill-current @if (request()->routeIs('admin.role*') || request()->routeIs('admin.plan*')) {{ 'text-indigo-500' }}@else{{ 'text-slate-600' }} @endif"
+                                                  d="M19.714 14.7l-7.007 7.007-1.414-1.414 7.007-7.007c-.195-.4-.298-.84-.3-1.286a3 3 0 113 3 2.969 2.969 0 01-1.286-.3z" />
+                                            <path class="fill-current @if (request()->routeIs('admin.role*') || request()->routeIs('admin.plan*')) {{ 'text-indigo-300' }}@else{{ 'text-slate-400' }} @endif"
+                                                  d="M10.714 18.3c.4-.195.84-.298 1.286-.3a3 3 0 11-3 3c.002-.446.105-.885.3-1.286l-6.007-6.007 1.414-1.414 6.007 6.007z" />
+                                            <path class="fill-current @if (request()->routeIs('admin.role*') || request()->routeIs('admin.plan*')) {{ 'text-indigo-500' }}@else{{ 'text-slate-600' }} @endif"
+                                                  d="M5.7 10.714c.195.4.298.84.3 1.286a3 3 0 11-3-3c.446.002.885.105 1.286.3l7.007-7.007 1.414 1.414L5.7 10.714z" />
+                                            <path class="fill-current @if (request()->routeIs('admin.role*') || request()->routeIs('admin.plan*')) {{ 'text-indigo-300' }}@else{{ 'text-slate-400' }} @endif"
+                                                  d="M19.707 9.292a3.012 3.012 0 00-1.415 1.415L13.286 5.7c-.4.195-.84.298-1.286.3a3 3 0 113-3 2.969 2.969 0 01-.3 1.286l5.007 5.006z" />
+                                        </svg>
+                                        <span
+                                              class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Configurações</span>
+                                    </div>
+                                    <!-- Icon -->
+                                    <div
+                                         class="flex shrink-0 ml-2 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                        <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400 @if (request()->routeIs('admin.role*') || request()->routeIs('admin.plan*')) {{ 'rotate-180' }} @endif"
+                                             :class="open ? 'rotate-180' : 'rotate-0'"
+                                             viewBox="0 0 12 12">
+                                            <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
+                                <ul class="pl-9 mt-1 @if (!request()->routeIs('admin.role*') || request()->routeIs('admin.plan*')) {{ 'hidden' }} @endif"
+                                    :class="open ? '!block' : 'hidden'">
+                                    <li class="mb-1 last:mb-0">
+                                        <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('admin.roles.index')) {{ '!text-indigo-500' }} @endif"
+                                           href="{{ route('admin.roles.index') }}">
+                                            <span
+                                                  class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                                Perfis de Acesso/Permissões</span>
+                                        </a>
+                                    </li>
+                                    <li class="mb-1 last:mb-0">
+                                        <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('plans')) {{ '!text-indigo-500' }} @endif"
+                                           href="{{ route('admin.plans.index') }}">
+                                            <span
+                                                  class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Planos</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    @endcan
+
+                    <!-- Plano -->
+                    @can('manage_user_plan')
+                        <li
+                            class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(2), ['inbox'])) {{ 'bg-slate-900' }} @endif">
+                            <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(2), ['inbox'])) {{ 'hover:text-slate-200' }} @endif"
+                               href="#0">
+                                <div class="flex items-center">
+
+                                    <svg class="shrink-0 h-6 w-6"
+                                         viewBox="0 0 24 24">
+                                        <g id="SVGRepo_bgCarrier"
+                                           stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier"
+                                           stroke-linecap="round"
+                                           stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path opacity="0.1"
+                                                  d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z"
+                                                  class="fill-current @if (in_array(Request::segment(2), ['plan'])) {{ 'text-indigo-500' }}@else{{ 'text-slate-600' }} @endif">
+                                            </path>
+                                            <path d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z"
+                                                  stroke="#323232"
+                                                  stroke-width="2"
+                                                  stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  class="fill-current @if (in_array(Request::segment(2), ['plan'])) {{ 'text-indigo-500' }}@else{{ 'text-slate-600' }} @endif">
+                                            </path>
+                                            <path d="M9 12L10.8189 13.8189V13.8189C10.9189 13.9189 11.0811 13.9189 11.1811 13.8189V13.8189L15 10"
+                                                  stroke="#323232"
+                                                  stroke-width="2"
+                                                  stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  class="fill-current @if (in_array(Request::segment(2), ['plan'])) {{ 'text-indigo-500' }}@else{{ 'text-slate-600' }} @endif">
+                                            </path>
+                                        </g>
+                                    </svg>
+                                    <span
+                                          class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                        Plano
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                    @endcan
+
+                    <!-- Messages -->
+                    <li
+                        class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(2), ['messages'])) {{ 'bg-slate-900' }} @endif">
+                        <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(2), ['messages'])) {{ 'hover:text-slate-200' }} @endif"
+                           href="#0">
+                            <div class="flex items-center justify-between">
+                                <div class="grow flex items-center">
+                                    <svg class="shrink-0 h-6 w-6"
+                                         viewBox="0 0 24 24">
+                                        <path class="fill-current @if (in_array(Request::segment(2), ['messages'])) {{ 'text-indigo-500' }}@else{{ 'text-slate-600' }} @endif"
+                                              d="M14.5 7c4.695 0 8.5 3.184 8.5 7.111 0 1.597-.638 3.067-1.7 4.253V23l-4.108-2.148a10 10 0 01-2.692.37c-4.695 0-8.5-3.184-8.5-7.11C6 10.183 9.805 7 14.5 7z" />
+                                        <path class="fill-current @if (in_array(Request::segment(2), ['messages'])) {{ 'text-indigo-300' }}@else{{ 'text-slate-400' }} @endif"
+                                              d="M11 1C5.477 1 1 4.582 1 9c0 1.797.75 3.45 2 4.785V19l4.833-2.416C8.829 16.85 9.892 17 11 17c5.523 0 10-3.582 10-8s-4.477-8-10-8z" />
+                                    </svg>
+                                    <span
+                                          class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Mensagens</span>
+                                </div>
+                                <!-- Badge -->
+                                <div class="flex flex-shrink-0 ml-2">
+                                    <span
+                                          class="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-indigo-500 px-2 rounded">4</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+
+                    <!-- Meu Perfil -->
+                    <li
+                        class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(2), ['profile'])) {{ 'bg-slate-900' }} @endif">
+                        <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(2), ['profile'])) {{ 'hover:text-slate-200' }} @endif"
+                           href="{{ route('profile.show') }}">
+                            <div class="flex items-center justify-between">
+                                <div class="grow flex items-center">
+                                    <svg class="shrink-0 h-6 w-6"
+                                         viewBox="0 0 24 24"
+                                         stroke-width="1.5"
+                                         stroke="currentColor"
+                                         fill="none"
+                                         stroke-linecap="round"
+                                         stroke-linejoin="round">
+                                        <path stroke="none"
+                                              d="M0 0h24v24H0z"
+                                              fill="none"></path>
+                                        <circle cx="12"
+                                                cy="12"
+                                                r="9"
+                                                class="fill-current @if (in_array(Request::segment(2), ['profile'])) {{ 'text-indigo-500' }}@else{{ 'text-slate-600' }} @endif">
+                                        </circle>
+                                        <circle cx="12"
+                                                cy="10"
+                                                r="3"></circle>
+                                        <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855"></path>
+                                    </svg>
+
+                                    <span
+                                          class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Meu
+                                        Perfil</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Expand / collapse button -->
+        <div class="pt-3 hidden lg:inline-flex 2xl:hidden justify-end mt-auto">
+            <div class="px-3 py-2">
+                <button @click="sidebarExpanded = !sidebarExpanded">
+                    <span class="sr-only">Expand / collapse sidebar</span>
+                    <svg class="w-6 h-6 fill-current sidebar-expanded:rotate-180"
+                         viewBox="0 0 24 24">
+                        <path class="text-slate-400"
+                              d="M19.586 11l-5-5L16 4.586 23.414 12 16 19.414 14.586 18l5-5H7v-2z" />
+                        <path class="text-slate-600"
+                              d="M3 23H1V1h2z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>

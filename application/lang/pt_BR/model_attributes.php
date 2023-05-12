@@ -1,0 +1,148 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Model Attributes
+    |--------------------------------------------------------------------------
+    */
+
+    'companies' => [
+        'logo_id' => 'Logotipo da Empresa',
+        'model_title' => 'Empresa',
+        'model_title_plural' => 'Empresas',
+        'user_id' => 'Usuário',
+        'company_category_id' => 'Categoria',
+        'plan_id' => 'Plano',
+        'name' => "Nome Fantasia",
+        'status' => "Status",
+        'slug' => "slug",
+        'document' => "CNPJ",
+        'description' => "Descrição",
+        'location' => "Endereço",
+        'zip_code' => "CEP",
+        'state' => "Estado",
+        'country' => "País",
+        'phone' => "Telefone",
+        'email' => "E-mail",
+        'website' => "Site",
+        'facebook' => "Facebook",
+        'twitter' => "Twitter",
+        'linkedin' => "Linkedin",
+        'pinterest' => "Pinterest",
+        'youtube' => "YouTube",
+        'instagram' => "Instagram",
+    ],
+    'businesses' => [
+        'logo_id' => 'Logotipo da Empresa',
+        'model_title' => 'Empresa',
+        'model_title_plural' => 'Empresas',
+        'user_id' => 'Usuário',
+        'company_category_id' => 'Categoria',
+        'plan_id' => 'Plano',
+        'name' => "Nome Fantasia",
+        'status' => "Status",
+        'slug' => "slug",
+        'document' => "CNPJ",
+        'description' => "Descrição",
+        'location' => "Endereço",
+        'zip_code' => "CEP",
+        'state' => "Estado",
+        'country' => "País",
+        'phone' => "Telefone",
+        'email' => "E-mail",
+        'website' => "Site",
+        'facebook' => "Facebook",
+        'twitter' => "Twitter",
+        'linkedin' => "Linkedin",
+        'pinterest' => "Pinterest",
+        'youtube' => "YouTube",
+        'instagram' => "Instagram",
+    ],
+    'products' => [
+        'model_title' => 'Produto',
+        'model_title_plural' => 'Produtos',
+        'company_id' => 'Produto da Empresa:',
+        'user_id' => 'Usuário',
+        "product_category_id" => "Categoria de Produtos",
+        "name" => "Nome do Produto",
+        "slug" => "Slug",
+        "description" => "Descrição",
+        "model" => "Modelo",
+        "sku" => "SKU",
+        "stock" => "Estoque",
+        "price" => "Preço",
+    ],
+    'products-categories' => [
+        'model_title' => 'Categoria de Produto',
+        'model_title_plural' => 'Categorias de Produtos',
+        "name" => "Título da Categoria",
+        "slug" => "Slug",
+        "icon" => "Ícone",
+    ],
+    'products-tags' => [
+        'model_title' => 'Tag de Produto',
+        'model_title_plural' => 'Tags de Produtos',
+        "name" => "Título da Tag",
+    ],
+    'services' => [
+        'model_title' => 'Produto',
+        'model_title_plural' => 'Produtos',
+        'company_id' => 'Serviço da Empresa:',
+        "service_category_id" => "Categoria de Serviço",
+        "name" => "Nome do Serviço",
+        "slug" => "Slug",
+        "description" => "Descrição",
+        "execution_time" => "Tempo de Execução",
+        "price" => "Preço",
+        "is24_7" => "Serviço 24/7?",
+        "working_days_start" => "Dia útil - Abertura",
+        "working_days_end" => "Dia útil - Fechamento",
+        "saturdays_start" => "Sábados - Abertura",
+        "saturdays_end" => "Sábado - Fechamento",
+        "sundays_n_holidays_start" => "Domingos e Feriados - Abertura",
+        "sundays_n_holidays_end" => "Domingos e Feriados - Fechamento",
+    ],
+    'services-categories' => [
+        'model_title' => 'Categoria de Serviços',
+        'model_title_plural' => 'Categorias de Serviçoss',
+        "name" => "Título da Categoria",
+        "slug" => "Slug",
+        "icon" => "Ícone",
+    ],
+    'services-tags' => [
+        'model_title' => 'Tag de Serviços',
+        'model_title_plural' => 'Tags de Serviçoss',
+        "name" => "Título da Tag",
+    ],
+    'company-categories' => [
+        'name' => 'Nome',
+        'is_active' => 'Habilitado',
+        'allow_products' => 'Permite gestão de produtos?',
+        'allow_services' => 'Permite gestão de serviços?',
+        'slug' => 'Slug',
+        'icon' => 'Icone'
+    ],
+    'roles' => [
+        'name' => 'Nome',
+        'permissions' => 'Permissões'
+    ],
+    'plans' => [
+        'name' => 'Nome',
+        'price' => 'Preço',
+        'duration' => 'Duração',
+        'recurrence' => 'Recorrência',
+        'description' => 'Descrição'
+    ],
+    'users' => [
+        'name' => 'Nome',
+        'email' => 'Email',
+        'phone' => 'Telefone',
+        'doctyperd' => 'Tipo de Documento',
+        'cpf' => 'CPF',
+        'cnpj' => 'CNPJ',
+        'roles' => 'Cargos',
+    ]
+
+];
